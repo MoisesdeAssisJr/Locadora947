@@ -10,11 +10,18 @@ import model.VHS;
 
 import java.math.BigDecimal;
 
+
 public class ClienteServiceImpl implements ClienteService {
+
+    private ReservasPorTelefone reservasPorTelefone;
     @Override
     public void alugar(Produto produto) throws ProdutoIndisponivelParaAluguelException{
         if(!produto.isAlugado) {
-            produto.setAlugado(true);
+            if (reservasPorTelefone.reservaDeFilmeAtivada(produto)) {
+                throw new ProdutoIndisponivelParaAluguelException();
+            } else {
+                produto.setAlugado(true);
+        }
         } else {
             throw new ProdutoIndisponivelParaAluguelException();
         }

@@ -9,15 +9,25 @@ import model.VHS;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.math.BigDecimal;
 
+import static org.mockito.Mockito.*;
+
 public class ClienteServiceImplTest {
 
-    static ClienteServiceImpl clienteService;
     static Cliente cliente;
     static Locadora locadora947;
     static VHS titanic;
+
+    @Mock
+    ReservasPorTelefone reservasPorTelefone;
+
+    @InjectMocks
+    static ClienteServiceImpl clienteService;
 
     @BeforeEach
     void beforeEach() {
@@ -26,18 +36,16 @@ public class ClienteServiceImplTest {
         cliente = new Cliente();
         locadora947 = new Locadora();
         titanic = new VHS(1,"Titanic");
+        MockitoAnnotations.openMocks(this);
 
-//        @ExtendWith(MockitoExtension.class)
-//        @Mock
-//        VHS titanic = new VHS(1,"Titanic");
-//
-//        @InjectMocks
     }
 
     @Test
     public void deveIniciarComOStatusNaoAlugado() {
         Assertions.assertFalse(titanic.isAlugado);
     }
+
+
 
     @Test
     public void deveIniciarComOStatusNaoDanificado() {
@@ -52,6 +60,7 @@ public class ClienteServiceImplTest {
     @Test
     public void deveAlterarCorretamenteOStatusParaAlugadoQuandoAlugar() {
         // When
+//        when(reservasPorTelefone.reservaDeFilmeAtivada(titanic)).thenReturn(false);
         clienteService.alugar(titanic);
 
         // Then
@@ -61,6 +70,8 @@ public class ClienteServiceImplTest {
     @Test
     public void deveAlterarCorretamenteOStatusParaNaoAlugadoQuandoDevolver() {
         // Given
+        titanic.setAlugado(false);
+        when(reservasPorTelefone.reservaDeFilmeAtivada(titanic)).thenReturn(false);
         clienteService.alugar(titanic);
 
         // When
@@ -96,9 +107,25 @@ public class ClienteServiceImplTest {
     }
 
     @Test
-    public void deveLancarExceptionAoTentarAlugarProdutoIndisponvelParaAluguel() throws ProdutoIndisponivelParaAluguelException {
+    public void deveLancarExceptionAoTentarAlugarProdutoEstiverAlugado() throws ProdutoIndisponivelParaAluguelException {
         // Given
         titanic.setAlugado(true);
+
+
+        // When | Then
+        Assertions.assertThrows(ProdutoIndisponivelParaAluguelException.class, () -> clienteService.alugar(titanic));
+    }
+
+
+    // Teste utilizando Mockito para simular a classe de reserva por telefone.
+    // Através do when-then, definimos o status de reserva do filme para reservado (true),
+    // a fim de que o aluguel seja impossível e a exceção seja disparada.
+    @Test
+    public void deveLancarExceptionAoTentarAlugarProdutoEstiverReservado() throws ProdutoIndisponivelParaAluguelException {
+        // Given
+        titanic.setAlugado(false);
+
+        when(reservasPorTelefone.reservaDeFilmeAtivada(titanic)).thenReturn(true);
 
         // Then
         Assertions.assertThrows(ProdutoIndisponivelParaAluguelException.class, () -> clienteService.alugar(titanic));

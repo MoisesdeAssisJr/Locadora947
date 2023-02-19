@@ -2,48 +2,22 @@ package services;
 
 import exceptions.ImpossivelRebobinarVHSJaRebobinado;
 import model.Cliente;
-import model.Locadora;
 import model.VHS;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.math.BigDecimal;
 
-//@ExtendWith(MockitoExtension.class)
-
 public class LocadoraServiceImplTest {
-
-
-//    @Mock
-//    Cliente cliente;
-//
-//    @Mock
-//    VHS titanic;
-//
-//    @InjectMocks
-//    LocadoraServiceImpl locadoraService;
-
-
     static LocadoraServiceImpl locadoraService;
     static Cliente cliente;
     static VHS titanic;
 
     @BeforeEach
     void beforeEach() {
-
-//        MockitoAnnotations.openMocks(this);
-
         locadoraService = new LocadoraServiceImpl();
         cliente = new Cliente();
         titanic = new VHS(1,"Titanic");
-
-
     }
 
     @Test
@@ -105,12 +79,10 @@ public class LocadoraServiceImplTest {
 
     @Test
     public void deveCobrarCorretamentePelosDiasDeAluguel()  {
-
         // When
         locadoraService.cobrarDoClienteDiasDeAluguel(cliente, titanic, 2);
 
         // Then
         Assertions.assertEquals(BigDecimal.valueOf(10.0), cliente.getValorDevidoPorAluguel());
     }
-
 }

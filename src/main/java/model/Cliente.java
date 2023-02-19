@@ -8,11 +8,11 @@ public class Cliente {
     String nome;
     Endereco endereco;
 
-    BigDecimal multaDevidaPorNaoRebobinar = BigDecimal.ZERO;
+    public BigDecimal multaDevidaPorNaoRebobinar = BigDecimal.ZERO;
 
-    BigDecimal multaDevidaPorDanificar = BigDecimal.ZERO;
+    public BigDecimal multaDevidaPorDanificar = BigDecimal.ZERO;
 
-    BigDecimal valorDevidoPorAluguel = BigDecimal.ZERO;
+    public BigDecimal valorDevidoPorAluguel = BigDecimal.ZERO;
 
 
     public Cliente() {

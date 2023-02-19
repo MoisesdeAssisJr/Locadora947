@@ -24,4 +24,10 @@ public class VHS extends Produto{
     public void setRebobinado(Boolean rebobinado) {
         isRebobinado = rebobinado;
     }
+
+    public Boolean VHSRebobinadoAtivo (Boolean statusRebobinado){
+        isRebobinado = statusRebobinado;
+        return isRebobinado;
+
+    }
 }

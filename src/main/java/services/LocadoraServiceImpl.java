@@ -9,9 +9,9 @@ import java.math.BigDecimal;
 
 public class LocadoraServiceImpl implements LocadoraService{
     @Override
-    public void rebobinar(VHS produto) {
-        if (!produto.isRebobinado) {
-            produto.setRebobinado(true);
+    public void rebobinar(VHS produto) throws ImpossivelRebobinarVHSJaRebobinado{
+        if (!produto.getRebobinado()) {
+            produto.VHSRebobinadoAtivo(true);
         } else {
             throw new ImpossivelRebobinarVHSJaRebobinado();
         }
